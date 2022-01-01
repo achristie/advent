@@ -1,12 +1,12 @@
 def main():
-    col = get_collection(filename="day1_input.txt")
+    col = get_collection(filename="input.txt")
     print(sum(is_increase(rolling_sum(col=col, window=3))))
     print(sum(is_increase(col=col)))
 
     print(rolling_sum(window=1))
 
 
-def get_collection(filename="day1_input.txt"):
+def get_collection(filename="input.txt"):
     col = []
     with open(filename) as file:
         for line in file:
