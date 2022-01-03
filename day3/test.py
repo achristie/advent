@@ -8,13 +8,9 @@ def main():
     print("decimal epsilon:", int(epsilon, 2))
     print("product:", int(gamma, 2) * int(epsilon, 2))
 
-    oxy, co2 = part2(gamma, epsilon)
     print("part 2 -------------")
-    print("oxy:", oxy)
-    print("co2:", co2)
-    print("decimal oxy:", int(oxy, 2))
-    print("decimal co2:", int(co2, 2))
-    print("life support:", int(oxy, 2) * int(co2, 2))
+    part2(gamma, epsilon)
+    # print(filter_list(["110001010111", "101111011110"], 1, "1"))
 
 
 def part2(gamma, epsilon):
@@ -28,10 +24,11 @@ def part2(gamma, epsilon):
     co2 = lst[:]
 
     for i in range(12):
-        oxy = filter_list(oxy, i, str(gamma[i]))
-        co2 = filter_list(co2, i, epsilon[i])
+        oxygen_generator_rtg = filter_list(oxy, i, str(gamma[i]))
+        # co2_scrubber_rtg = filter_list(co2, i, epsilon[i])
 
-    return oxy[0], co2[0]
+    print(oxygen_generator_rtg)
+    # print(co2_scrubber_rtg)
 
 
 def filter_list(lst, idx, value):
@@ -40,8 +37,8 @@ def filter_list(lst, idx, value):
         if l[idx] == value:
             new_lst.append(l)
 
-    if len(new_lst) == 0:
-        return lst[::-1]
+    # if len(new_lst) == 0:
+    #     return lst[::-1]
     return new_lst
 
 
@@ -56,7 +53,7 @@ def part1():
     gamma = "".join(["1" if (num > length / 2) else "0" for num in lst])
     epsilon = "".join(["1" if (num <= length / 2) else "0" for num in lst])
 
-    return gamma, epsilon
+    return (gamma, epsilon)
 
 
 if __name__ == "__main__":
