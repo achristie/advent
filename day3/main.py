@@ -8,7 +8,7 @@ def main():
     print("decimal epsilon:", int(epsilon, 2))
     print("product:", int(gamma, 2) * int(epsilon, 2))
 
-    oxy, co2 = part2(gamma, epsilon)
+    oxy, co2 = part2()
     print("part 2 -------------")
     print("oxy:", oxy)
     print("co2:", co2)
@@ -16,10 +16,11 @@ def main():
     print("decimal co2:", int(co2, 2))
     print("life support:", int(oxy, 2) * int(co2, 2))
 
+    print(not most_common_digit(["1100010110", "1100110100"], 5))
 
-def part2(gamma, epsilon):
+
+def part2():
     lst = []
-    print(gamma)
     with open("input.txt") as file:
         for line in file:
             lst.append(line.rstrip())
@@ -28,16 +29,22 @@ def part2(gamma, epsilon):
     co2 = lst[:]
 
     for i in range(12):
-        oxy = filter_list(oxy, i, str(gamma[i]))
-        co2 = filter_list(co2, i, epsilon[i])
+        oxy = filter_list(oxy, i, most_common_digit(oxy, i))
+        co2 = filter_list(co2, i, not most_common_digit(co2, i))
 
     return oxy[0], co2[0]
+
+
+def most_common_digit(lst, idx):
+    length = len(lst)
+    relevant_digit = map(lambda x: int(x[idx]), lst)
+    return True if sum(relevant_digit) >= length / 2 else False
 
 
 def filter_list(lst, idx, value):
     new_lst = []
     for l in lst:
-        if l[idx] == value:
+        if int(l[idx]) == int(value):
             new_lst.append(l)
 
     if len(new_lst) == 0:
