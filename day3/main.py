@@ -1,5 +1,6 @@
 def main():
-    gamma, epsilon = part1()
+    lines = [line for line in open("input.txt").read().splitlines()]
+    gamma, epsilon = part1(lines)
 
     print("part 1 -------------")
     print("gamma:", gamma)
@@ -8,7 +9,7 @@ def main():
     print("decimal epsilon:", int(epsilon, 2))
     print("product:", int(gamma, 2) * int(epsilon, 2))
 
-    oxy, co2 = part2()
+    oxy, co2 = part2(lines)
     print("part 2 -------------")
     print("oxy:", oxy)
     print("co2:", co2)
@@ -16,19 +17,12 @@ def main():
     print("decimal co2:", int(co2, 2))
     print("life support:", int(oxy, 2) * int(co2, 2))
 
-    print(not most_common_digit(["1100010110", "1100110100"], 5))
 
+def part2(lines):
+    oxy = lines[:]
+    co2 = lines[:]
 
-def part2():
-    lst = []
-    with open("input.txt") as file:
-        for line in file:
-            lst.append(line.rstrip())
-
-    oxy = lst[:]
-    co2 = lst[:]
-
-    for i in range(12):
+    for i in range(len(lines[0])):
         oxy = filter_list(oxy, i, most_common_digit(oxy, i))
         co2 = filter_list(co2, i, not most_common_digit(co2, i))
 
@@ -52,14 +46,12 @@ def filter_list(lst, idx, value):
     return new_lst
 
 
-def part1():
-    lst = list(range(12))
-    length = 0
-    with open("input.txt") as file:
-        for line in file:
-            length += 1
-            for i, s in enumerate(line.rstrip()):
-                lst[i] += int(s)
+def part1(lines):
+    length = len(lines)
+    lst = list(range(len(lines[0])))
+    for line in lines:
+        for i, s in enumerate(line):
+            lst[i] += int(s)
     gamma = "".join(["1" if (num > length / 2) else "0" for num in lst])
     epsilon = "".join(["1" if (num <= length / 2) else "0" for num in lst])
 
