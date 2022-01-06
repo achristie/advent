@@ -1,18 +1,21 @@
 import numpy as np
+from pprint import pprint
 
 
 def main():
     lines = [line for line in open("input.txt").read().splitlines() if line != ""]
     numbers = lines[0]
     boards = lines[1:]
-    # print(numbers)
-    # print(boards)
-    lst = [boards[i : i + 5] for i in range(0, len(boards), 5)]
-    print(lst[0], lst[1])
-    # print(list(zip(*lst[0])))
-    # print(lst[0][0].split())
+    boards_lst = []
 
-    print(list(map(lambda x: x.split(), lst)))
+    for i in boards:
+        new_lst = i.split(" ")
+        new_lst = [int(x) for x in new_lst if x]
+        boards_lst.append(new_lst)
+
+    lst = [boards_lst[i : i + 5] for i in range(0, len(boards_lst), 5)]
+
+    pprint(np.array(lst)[0])
 
 
 if __name__ == "__main__":
