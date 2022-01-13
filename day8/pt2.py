@@ -1,6 +1,8 @@
 from pprint import pp
 
-output = [d.split(" | ")[0] for d in open("input_test.txt").read().splitlines()]
+file_name = "input.txt"
+segments = [d.split(" | ")[0] for d in open(file_name).read().splitlines()]
+output = [d.split(" | ")[1] for d in open(file_name).read().splitlines()]
 
 
 def find_1478(input):
@@ -34,7 +36,7 @@ def find_925(input, d):
     s = set(input)
     if length == 6 and s != d["6"] and s != d["0"]:
         return {"9": s}
-    if length == 5 and len(s.intersection(d["6"])) == 4:
+    if length == 5 and len(s.intersection(d["4"])) == 2:
         return {"2": s}
     if length == 5 and len(s.intersection(d["6"])) == 5:
         return {"5": s}
@@ -42,7 +44,8 @@ def find_925(input, d):
     return {}
 
 
-for o in output[:1]:
+running_total = 0
+for i, o in enumerate(segments):
     d = {}
     for s in o.split(" "):
         d.update(find_1478(s))
@@ -53,4 +56,11 @@ for o in output[:1]:
     for s in o.split(" "):
         d.update(find_925(s, d))
 
-    pp(d)
+    otpt = output[i]
+    answer = ""
+    for s in otpt.split(" "):
+        for k, v in d.items():
+            if set(s) == v:
+                answer += k
+    running_total += int(answer)
+    print("output:", otpt, "|", answer, "|", running_total)
