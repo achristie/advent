@@ -47,13 +47,14 @@ def find_925(input, d):
 running_total = 0
 for i, o in enumerate(segments):
     d = {}
-    for s in o.split(" "):
+    split = o.split(" ")
+    for s in split:
         d.update(find_1478(s))
 
-    for s in o.split(" "):
+    for s in split:
         d.update(find_603(s, d))
 
-    for s in o.split(" "):
+    for s in split:
         d.update(find_925(s, d))
 
     otpt = output[i]
