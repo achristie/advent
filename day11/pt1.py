@@ -1,3 +1,5 @@
+from pprint import pp
+
 grid = [[int(i) for i in d] for d in open("input.txt").read().splitlines()]
 x_size = len(grid)
 y_size = len(grid[0])
@@ -48,8 +50,18 @@ def run_step(grid):
     return len(flashed), grid
 
 
-running_total = 0
-for i in range(100):
+# Part 1
+# running_total = 0
+# for i in range(100):
+#     count, grid = run_step(grid)
+#     running_total += count
+#     print(running_total)
+
+
+for i in range(800):
     count, grid = run_step(grid)
-    running_total += count
-    print(running_total)
+    if count == x_size * y_size:
+        print(f"Step {i+1}, Flashes: {count}")
+        print("-----------------------------------")
+        pp(grid)
+        break
