@@ -1,7 +1,7 @@
 from pprint import pp
 import numpy as np
 
-data = [d for d in open("input_test.txt").read().split("\n\n")]
+data = [d for d in open("input.txt").read().split("\n\n")]
 
 
 def tuplize(str):
@@ -22,11 +22,12 @@ def fold_to_point(str):
 
 folds = [fold_to_point(f.replace("fold along ", "")) for f in data[1].split("\n")]
 
-max_x = max(p[0] for p in points)
-max_y = max(p[1] for p in points)
+max_x = max(p[0] for p in points) + 1
+# max_y = max(p[1] for p in points) + 1
+max_y = 895
 
 
-grid = [[0 for x in range(max_x + 1)] for y in range(max_y + 1)]
+grid = [[0 for x in range(max_x)] for y in range(max_y)]
 
 
 def add_point_to_grid(grid, point):
@@ -38,23 +39,29 @@ def fold_grid(grid, instruction):
     x = instruction[0]
     y = instruction[1]
     if y > 0:
-        above_fold = grid[0:y]
+        above_fold = grid[:y]
         below_fold = grid[y + 1 :]
         below_fold = below_fold[::-1]
         return np.array(above_fold) + np.array(below_fold)
     else:
-        print(type(x))
         left_of_fold = [g[:x] for g in grid]
         right_of_fold = [g[x + 1 :] for g in grid]
         right_of_fold = np.fliplr(right_of_fold)
         return np.array(left_of_fold) + right_of_fold
 
 
+def display_grid(grid):
+    grid = np.where(grid == 0, ".", "#")
+    for line in grid:
+        print("".join(line))
+
+
 for p in points:
     grid = add_point_to_grid(grid, p)
 
-print(folds)
-for f in folds[:1]:
+for f in folds:
     grid = fold_grid(grid, f)
-    pp(grid)
-    pp((grid > 0).sum())
+
+
+display_grid(grid)
+pp((grid > 0).sum())
