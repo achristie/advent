@@ -1,7 +1,8 @@
 from collections import defaultdict
 from pprint import pp
+from functools import cache
 
-path_data = [p for p in open("input.txt").read().splitlines()]
+path_data = [p for p in open("input_test.txt").read().splitlines()]
 graph = defaultdict(list)
 
 for p in path_data:
@@ -14,30 +15,23 @@ for p in path_data:
 pp(graph)
 
 
-# def find_all_paths(graph, start, end):
-#     def find_path(start, end, state):
-#         if start.islower() and len(start) == 1:
-#             state.append(start)
-#         paths = []
-#         for e in graph[start]:
-#             if e == "end":
-#                 paths.append(state)
-#             elif e not in state:
-#                 paths.append(find_path(e, end, state))
-#         return paths
-#         # if e.islower() and len(e) == 1 and e in state:
+def find_all_paths2(graph, start, end):
+    paths = []
 
-#         #     deadends.append(state)
-#         #     return
+    @cache
+    def find_path(start, end, state=()):
+        new_state = state + (start,)
+        print(new_state)
+        if start == end:
+            paths.append(new_state)
+        for e in graph[start]:
+            if e.isupper() or (e not in state and e != "start"):
+                find_path(e, end, new_state)
 
-#         # state = state.append(e)
-#         # if e == end:
-#         #     paths.append(state)
-#         #     return
-#         # else:
-#         #     return find_path(e, end, state)
+        return paths
 
-#     return find_path(start, end, [start])
+    find_path(start, end)
+    return paths
 
 
 def find_all_paths(graph, start, end, path=[]):
@@ -51,6 +45,9 @@ def find_all_paths(graph, start, end, path=[]):
     return paths
 
 
-paths = find_all_paths(graph, "start", "end")
-pp(paths)
-print("Number of paths:", len(paths))
+# paths = find_all_paths(graph, "start", "end")
+# pp(paths)
+# print("Number of paths:", len(paths))
+
+p2 = find_all_paths2(graph, "start", "end")
+pp(p2)
