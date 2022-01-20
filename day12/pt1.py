@@ -1,8 +1,7 @@
-from collections import defaultdict
+from collections import defaultdict, Counter
 from pprint import pp
-from functools import cache
 
-path_data = [p for p in open("input_test.txt").read().splitlines()]
+path_data = [p for p in open("input.txt").read().splitlines()]
 graph = defaultdict(list)
 
 for p in path_data:
@@ -18,15 +17,23 @@ pp(graph)
 def find_all_paths2(graph, start, end):
     paths = []
 
-    @cache
-    def find_path(start, end, state=()):
-        new_state = state + (start,)
-        print(new_state)
+    def find_path(start, end, state=[]):
+        new_state = state + [start]
         if start == end:
             paths.append(new_state)
         for e in graph[start]:
-            if e.isupper() or (e not in state and e != "start"):
-                find_path(e, end, new_state)
+            if e != "start":
+                if e.isupper():
+                    find_path(e, end, new_state)
+                else:
+                    filtered = filter(lambda x: x.islower(), new_state)
+                    c = Counter(filtered).most_common(1)
+                    flag = True if c[0][1] > 1 else False
+
+                    if (flag and new_state.count(e) < 1) or (
+                        not flag and new_state.count(e) < 2
+                    ):
+                        find_path(e, end, new_state)
 
         return paths
 
@@ -45,9 +52,7 @@ def find_all_paths(graph, start, end, path=[]):
     return paths
 
 
-# paths = find_all_paths(graph, "start", "end")
-# pp(paths)
-# print("Number of paths:", len(paths))
-
 p2 = find_all_paths2(graph, "start", "end")
-pp(p2)
+# pp(p2)
+p2 = [p for p in p2 if p.count("end") == 1]
+pp(len(p2))
