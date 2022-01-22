@@ -1,10 +1,10 @@
 from collections import Counter
 
-data = [d for d in open("input.txt").read().splitlines()]
+data = [d for d in open("input_test.txt").read().splitlines()]
 template = data[0]
 rules = data[2:]
 
-rules = dict([(p.split(" -> ")[0], p.split(" -> ")[1]) for p in rules])
+rules = {p.split(" -> ")[0]: p.split(" -> ")[1] for p in rules}
 
 print(template, rules)
 
