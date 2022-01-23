@@ -1,7 +1,4 @@
-from distutils.util import execute
-
-
-target = open("input_test.txt").read().removeprefix("target area: ").split(",")
+target = open("input.txt").read().removeprefix("target area: ").split(",")
 x, y = [t.split("=")[1].split("..") for t in target]
 x = (int(x[0]), int(x[1]))
 y = (int(y[0]), int(y[1]))
@@ -34,14 +31,14 @@ def within_area(area, position):
 def simulate(area):
     pos = (0, 0)
     max_y = (0, 0, 0)  # height, dx, dy
-    for i in range(10):
-        for j in range(10):
+    for i in range(20):
+        for j in range(200):
             pos = (0, 0)
             y_prime = 0
             vi = (i, j)
             v = (i, j)
             counts = False
-            for _ in range(40):
+            for _ in range(400):
                 pos, v = execute_step(v, pos)
                 y_prime = y_prime if pos[1] <= y_prime else pos[1]
                 if within_area(area, pos):
