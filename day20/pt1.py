@@ -1,4 +1,6 @@
-alg, img = open("input_test.txt").read().split("\n\n")
+import copy
+
+alg, img = open("input.txt").read().split("\n\n")
 img = [list(x) for x in img.splitlines()]
 
 
@@ -33,11 +35,12 @@ def bin(point, img):
     return int(s, 2)
 
 
-def add_dim(img):
-    temp = img.copy()
+def add_dim(img, alg, cycle):
+    temp = copy.deepcopy(img)
+    char = "#" if alg[0] == "#" and not cycle % 2 else "."
     for x in temp:
-        x.insert(0, ".")
-        x.insert(len(x) + 1, ".")
+        x.insert(0, char)
+        x.insert(len(x) + 1, char)
 
     temp.insert(0, ["." for _ in range(len(x))])
     temp.insert(len(x), ["." for _ in range(len(x))])
@@ -45,24 +48,24 @@ def add_dim(img):
 
 
 def optimize(img, alg, cycles):
-    new_img = add_dim(img)
-    temp_img = img.copy()
-    for i in range(len(img)):
-        for j in range(len(img[0])):
-            lookup = bin((i, j), new_img)
-            temp_img[i][j] = alg[lookup]
+    def iterate(img, cycle):
+        img = add_dim(img, alg, cycle)
+        draft_img = copy.deepcopy(img)
+        for i in range(len(img)):
+            for j in range(len(img[0])):
+                lookup = bin((i, j), img)
+                draft_img[i][j] = alg[lookup]
+        return draft_img
 
-    return temp_img
+    for i in range(cycles):
+        img = iterate(img, i)
+
+    return img
 
 
-# print(bin((3, 3), add_dim(img)))
-# print(bin((3, 3), add_dim(img)))
-# print(bin((3, 3), add_dim(img)))
-# display_grid(optimize(img, alg, 1))
+output = optimize(img, alg, 2)
+display_grid(output)
+print("Count (2):", sum(x.count("#") for x in output))
 
-# display_grid(img)
-# display_grid(add_dim(img))
-# display_grid(img)
-display_grid(add_dim(img))
-display_grid(add_dim(img))
-display_grid(img)
+output = optimize(img, alg, 50)
+print("Count (50):", sum(x.count("#") for x in output))
